@@ -2,6 +2,7 @@ import { useAuth } from "./context/authContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -19,19 +20,26 @@ export const App = () => {
       <Routes>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route
-          path="/home" 
+          path="/home"
           element={
             <ProtectedRoute>
               <Home />
             </ProtectedRoute>
           }
         />
-
         <Route
-          path="/login" 
+          path="/login"
           element={
             <PublicRoute>
               <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
             </PublicRoute>
           }
         />
