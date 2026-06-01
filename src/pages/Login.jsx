@@ -21,16 +21,14 @@ export const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async () => {
-    if (!formData.email || !formData.password) {
-      setError("Fill all the fields.");
-      return;
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     setError("");
     setLoading(true);
     try {
       const res = await api.post("/auth/login", formData);
+      console.log(res.data);
       login(res.data.token, res.data.user);
       navigate("/");
     } catch (err) {
@@ -54,65 +52,76 @@ export const Login = () => {
         className="w-full max-w-md flex flex-col rounded-lg p-8 shadow-lg gap-4 items-center"
       >
         <div className="flex flex-col gap-3 items-center justify-center">
-        <div
-          style={{ backgroundColor: colors.brand.redGlow }}
-          className="w-12 h-12 rounded-full flex items-center justify-center"
-        >
-          <Shield className="w-6 h-6 text-[#FF3B3B]" />
-        </div>
+          <div
+            style={{ backgroundColor: colors.brand.redGlow }}
+            className="w-12 h-12 rounded-full flex items-center justify-center"
+          >
+            <Shield className="w-6 h-6 text-[#FF3B3B]" />
+          </div>
 
-        <h2
-          style={{ color: colors.text.primary }}
-          className="text-2xl font-bold text-center"
-        >
-          Welcome back
-        </h2>
-        <p
-          style={{ color: colors.text.secondary }}
-          className="text-sm text-center"
-        >
-          Sign in to FraudEngine
-        </p>
+          <h2
+            style={{ color: colors.text.primary }}
+            className="text-2xl font-bold text-center"
+          >
+            Welcome back
+          </h2>
+          <p
+            style={{ color: colors.text.secondary }}
+            className="text-sm text-center"
+          >
+            Sign in to FraudEngine
+          </p>
         </div>
-        <div className="w-full flex-col flex gap-4 mb-6">
-          <InputField
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            placeholder="naanga4peru@gmail.com"
-            onChange={handleChange}
-          />
+        <form onSubmit={handleSubmit} className="w-full">
+          <div className="w-full flex-col flex gap-4 mb-6">
+            <InputField
+              label="Email"
+              name="email"
+              type="email"
+              value={formData.email}
+              placeholder="naanga4peru@gmail.com"
+              onChange={handleChange}
+            />
 
-          <InputField
-            label="Password"
-            name="password"
-            type="password"
-            value={formData.password}
-            placeholder="********"
-            onChange={handleChange}
-          />
-        </div>
-        {error && (
-          <div className="text-red-500 text-sm text-center mb-4">{error}</div>
-        )}
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="w-full py-3 rounded-md font-medium mb-4 hover:opacity-70"
-          style={{
-            color: colors.text.primary,
-            backgroundColor: loading ? colors.brand.redHover : colors.brand.red,
-            cursor: loading ? "not-allowed" : "pointer",
-          }}
-        >
-          {loading ? "Loading..." : "Sign In"}
-        </button>
+            <InputField
+              label="Password"
+              name="password"
+              type="password"
+              value={formData.password}
+              placeholder="********"
+              onChange={handleChange}
+            />
+          </div>
+          {error && (
+            <div
+              style={{ color: colors.brand.red }}
+              className="text-sm text-center mb-4"
+            >
+              {error}
+            </div>
+          )}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 rounded-md font-medium mb-4 hover:opacity-70"
+            style={{
+              color: colors.text.primary,
+              backgroundColor: loading
+                ? colors.brand.redHover
+                : colors.brand.red,
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
+          >
+            {loading ? "Loading..." : "Sign In"}
+          </button>
+        </form>
         <div className="text-center text-lg">
-          <span className="text-gray-400">Don't have an account? </span>
+          <span style={{ color: colors.text.secondary }}>
+            Don't have an account?{" "}
+          </span>
           <a
             href="/register"
-            className="font-medium hover:text-red-400"
+            className="font-medium hover:opacity-70 hover:underline"
             style={{ color: colors.brand.red }}
           >
             Register

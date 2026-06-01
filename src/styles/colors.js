@@ -28,13 +28,13 @@ const colors = {
 
   // ─── Status ───────────────────────────────────────────────────
   status: {
-    clean:        "#10B981",
+    clean:        "#06422e93",
     cleanMuted:   "#10B98126",
     cleanText:    "#34D399",
     review:       "#F59E0B",
     reviewMuted:  "#F59E0B26",
     reviewText:   "#FCD34D",
-    flagged:      "#FF3B3B",
+    flagged:      "#83252580",
     flaggedMuted: "#FF3B3B26",
     flaggedText:  "#FF6B6B",
   },
