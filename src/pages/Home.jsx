@@ -1,44 +1,79 @@
-import { ChevronsUp, Plus } from "lucide-react";
+import { Bell, CheckCircle, ChevronsUp, Plus } from "lucide-react";
 import InputField from "../components/inputfield";
 import colors from "../styles/colors";
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import StatusBadge from "../components/status";
 import { TransactionCard } from "../components/transactionCard";
+import AlertCard from "../components/alertCard";
+
+const TABLE_GRID =
+  "grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_180px] items-center";
+
+const Header = ({ setIsExpanded }) => {
+  return (
+    <div
+      className={`${TABLE_GRID} px-4 py-3`}
+      style={{
+        backgroundColor: colors.bg.input,
+        borderTop: `1px solid ${colors.bg.border}`,
+      }}
+    >
+      <ChevronsUp
+        size={16}
+        color={colors.text.secondary}
+        className="cursor-pointer hover:opacity-70 transition-opacity"
+        onClick={() => setIsExpanded({})}
+      />
+
+      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
+        MERCHANT
+      </p>
+
+      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
+        CATEGORY
+      </p>
+
+      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
+        AMOUNT
+      </p>
+
+      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
+        LOCATION
+      </p>
+
+      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
+        TIME
+      </p>
+
+      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
+        STATUS
+      </p>
+    </div>
+  );
+};
 
 const SubmitCard = ({
   transactionData,
   handleChange,
   handleSubmit,
   loading,
-  error,
   fraudResult,
 }) => {
   return (
     <div
-      className="w-full max-w-4xl flex flex-col p-4 rounded-xl gap-4"
+      className="w-full max-w-6xl flex flex-col p-4 rounded-xl gap-4"
       style={{ backgroundColor: colors.bg.surface }}
     >
       <div className="flex flex-row gap-2 items-center w-full">
         <Plus color={colors.brand.red} size="20" />
-        <h2 style={{ color: colors.text.primary }} className="text-xl">
+        <h2
+          style={{ color: colors.text.primary }}
+          className="text-xl font-bold"
+        >
           Submit Transaction
         </h2>
       </div>
-
-      {error && (
-        <div
-          style={{
-            background: colors.status.flaggedMuted,
-            color: colors.status.flaggedText,
-            padding: "10px 14px",
-            borderRadius: "8px",
-            fontSize: "13px",
-          }}
-        >
-          {error}
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
@@ -120,48 +155,204 @@ const SubmitCard = ({
   );
 };
 
-const TABLE_GRID =
-  "grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_180px] items-center";
-
-const Header = ({ setIsExpanded }) => {
+const TransactionPart = ({
+  transactions,
+  setIsExpanded,
+  isFetching,
+  isExpanded,
+}) => {
   return (
     <div
-      className={`${TABLE_GRID} px-4 py-3`}
+      className="flex flex-col w-full rounded-xl max-w-6xl overflow-hidden"
       style={{
-        backgroundColor: colors.bg.input,
-        borderTop: `1px solid ${colors.bg.border}`,
+        border: `1px solid ${colors.bg.border}`,
       }}
     >
-      <ChevronsUp
-        size={16}
-        color={colors.text.secondary}
-        className="cursor-pointer hover:opacity-70 transition-opacity"
-        onClick={() => setIsExpanded({})}
-      />
+      <div
+        className="p-4"
+        style={{
+          backgroundColor: colors.bg.surface,
+        }}
+      >
+        <h2
+          className="text-lg font-bold"
+          style={{ color: colors.text.primary }}
+        >
+          Recent Transactions
+        </h2>
+      </div>
 
-      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
-        MERCHANT
-      </p>
+      <div className="overflow-x-auto">
+        <div className="min-w-[1100px]">
+          <Header setIsExpanded={setIsExpanded} />
+          {isFetching ? (
+            <div
+              className="flex justify-center items-center py-8"
+              style={{ color: colors.text.secondary }}
+            >
+              Loading transactions...
+            </div>
+          ) : transactions.length === 0 ? (
+            <div
+              className="flex justify-center items-center py-4"
+              style={{
+                color: colors.text.secondary,
+                backgroundColor: colors.bg.elevated,
+              }}
+            >
+              No transactions found.
+            </div>
+          ) : (
+            <div className="max-h-[430px] overflow-y-auto">
+              {transactions.map((transaction) => (
+                <TransactionCard
+                  key={transaction.id}
+                  transaction={transaction}
+                  isExpanded={isExpanded[transaction.id]}
+                  setIsExpanded={setIsExpanded}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
-      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
-        CATEGORY
-      </p>
-
-      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
-        AMOUNT
-      </p>
-
-      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
-        LOCATION
-      </p>
-
-      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
-        TIME
-      </p>
-
-      <p className="text-sm font-medium" style={{ color: colors.text.primary }}>
-        STATUS
-      </p>
+const AlertPart = ({
+  reviewedAlerts,
+  pendingAlerts,
+  isFetching,
+  setShowPending,
+  showPending,
+  reviewAlert,
+}) => {
+  return (
+    <div
+      className="flex flex-col w-full gap-2 rounded-xl overflow-hidden"
+      style={{
+        backgroundColor: colors.bg.surface,
+        border: `1px solid ${colors.bg.border}`,
+      }}
+    >
+      <div
+        className="flex flex-row gap-3 items-center p-4"
+        style={{ borderBottom: `1px solid ${colors.bg.border}` }}
+      >
+        <Bell size={20} color={colors.text.primary} />
+        <h1
+          className="font-bold text-xl"
+          style={{ color: colors.text.primary }}
+        >
+          Fraud Alerts
+        </h1>
+        {pendingAlerts.length !== 0 && (
+          <div
+            className="w-5 h-5 rounded-2xl flex justify-center items-center"
+            style={{
+              color: colors.text.primary,
+              backgroundColor: colors.brand.red,
+            }}
+          >
+            <p className="text-sm">{pendingAlerts.length}</p>
+          </div>
+        )}
+      </div>
+      <div
+        className="flex flex-row justify-between"
+        style={{ borderBottom: `1px solid ${colors.bg.border}` }}
+      >
+        <div
+          onClick={() => setShowPending(true)}
+          className="flex flex-row w-full justify-center items-center p-2"
+          style={{
+            borderBottom: showPending
+              ? `2px solid ${colors.brand.red}`
+              : "2px solid transparent",
+          }}
+        >
+          <p
+            className="hover:opacity-70 text-md"
+            style={{
+              color: colors.text.primary,
+            }}
+          >
+            Pending
+          </p>
+        </div>
+        <div
+          onClick={() => setShowPending(false)}
+          className="flex flex-row w-full justify-center items-center p-2"
+          style={{
+            borderBottom: !showPending
+              ? `2px solid ${colors.status.cleanText}`
+              : "2px solid transparent",
+          }}
+        >
+          <p
+            className="hover:opacity-70 text-md"
+            style={{ color: colors.text.primary }}
+          >
+            Resolved
+          </p>
+        </div>
+      </div>
+      {/*Alerts */}
+      {showPending ? (
+        isFetching ? (
+          <div
+            className="min-h-[700px] flex justify-center items-center py-8"
+            style={{ color: colors.text.secondary }}
+          >
+            Loading alerts...
+          </div>
+        ) : pendingAlerts.length === 0 ? (
+          <div
+            className="min-h-[700px] flex flex-col h-full gap-2 justify-center items-center py-4"
+            style={{
+              color: colors.text.secondary,
+            }}
+          >
+            <CheckCircle size={40} color={colors.status.cleanText} />
+            <p>No pending alerts.</p>
+          </div>
+        ) : (
+          <div className="h-[700px] p-4 flex flex-col gap-4 overflow-y-auto">
+            {pendingAlerts.map((alert) => (
+              <AlertCard
+                key={alert.id}
+                alert={alert}
+                status={"flagged"}
+                onReview={reviewAlert}
+              />
+            ))}
+          </div>
+        )
+      ) : isFetching ? (
+        <div
+          className="min-h-[700px] flex justify-center items-center py-8"
+          style={{ color: colors.text.secondary }}
+        >
+          Loading alerts...
+        </div>
+      ) : reviewedAlerts.length === 0 ? (
+        <div
+          className="min-h-[700px] flex flex-col gap-2 justify-center items-center py-4"
+          style={{
+            color: colors.text.secondary,
+          }}
+        >
+          <CheckCircle size={40} color={colors.status.cleanText} />
+          <p>No reviewed alerts.</p>
+        </div>
+      ) : (
+        <div className="h-[700px] flex flex-col gap-4 p-4 overflow-y-auto">
+          {reviewedAlerts.map((alert) => (
+            <AlertCard key={alert.id} alert={alert} status={"reviewed"} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -172,6 +363,8 @@ const Home = () => {
   const [error, setError] = useState("");
   const [isExpanded, setIsExpanded] = useState({});
   const [transactions, setTransactions] = useState([]);
+  const [alerts, setAlerts] = useState([]);
+  const [showPending, setShowPending] = useState(true);
   const [fraudResult, setFraudResult] = useState({
     riskScore: 0,
     triggeredRules: [],
@@ -195,7 +388,20 @@ const Home = () => {
       const response = await api.get("/transactions");
       setTransactions(response.data.transactions);
     } catch (err) {
-      setError(err.response?.data?.message || "Transaction failed");
+      setError(err.response?.data?.message || "Transaction Retrivel failed");
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  const fetchAlerts = async () => {
+    setError("");
+    setIsFetching(true);
+    try {
+      const response = await api.get("/fraud/alerts");
+      setAlerts(response.data.alerts);
+    } catch (err) {
+      setError(err.response?.data?.message || "Alerts Retrivel failed");
     } finally {
       setIsFetching(false);
     }
@@ -222,6 +428,7 @@ const Home = () => {
         location: "",
       });
       await fetchTransactions();
+      await fetchAlerts();
     } catch (err) {
       setError(err.response?.data?.message || "Transaction failed");
     } finally {
@@ -229,20 +436,56 @@ const Home = () => {
     }
   };
 
+  const reviewAlert = async (alert) => {
+    setError("");
+    try {
+      await api.put(`/fraud/alerts/${alert.id}`);
+      setAlerts((prev) =>
+        prev.map((a) => (a.id === alert.id ? { ...a, reviewed: true } : a)),
+      );
+      setTransactions((prev) =>
+        prev.map((t) =>
+          t.id === alert.transaction.id ? { ...t, status: "CLEAN" } : t,
+        ),
+      );
+    } catch (err) {
+      setError(err.response?.data?.message || "Review failed");
+    }
+  };
+
   useEffect(() => {
     const loadData = async () => {
       await fetchTransactions();
+      await fetchAlerts();
     };
     loadData();
   }, []);
 
+  const pendingAlerts = alerts.filter((alert) => !alert.reviewed);
+
+  const reviewedAlerts = alerts.filter((alert) => alert.reviewed);
+
   return (
     <div
       style={{ backgroundColor: colors.bg.primary }}
-      className="flex items-center justify-center p-6 min-h-screen"
+      className="flex flex-col gap-4 p-6 min-h-screen"
     >
-      <div className="flex flex-row w-full">
+      {error && (
+        <div
+          style={{
+            background: colors.status.flaggedMuted,
+            color: colors.status.flaggedText,
+            padding: "10px 14px",
+            borderRadius: "8px",
+            fontSize: "13px",
+          }}
+        >
+          {error}
+        </div>
+      )}
+      <div className="flex flex-row items-start w-full gap-10">
         <div className="flex flex-col w-full gap-4">
+          {/*Save Transaction */}
           <SubmitCard
             transactionData={transactionData}
             handleChange={handleChange}
@@ -251,54 +494,23 @@ const Home = () => {
             error={error}
             fraudResult={fraudResult}
           />
-          <div
-            className="flex flex-col w-full rounded-xl overflow-hidden"
-            style={{
-              border: `1px solid ${colors.bg.border}`,
-            }}
-          >
-            <div
-              className="p-4"
-              style={{
-                backgroundColor: colors.bg.surface,
-              }}
-            >
-              <h2 className="text-lg" style={{ color: colors.text.primary }}>
-                Recent Transactions
-              </h2>
-            </div>
-
-            <div className="overflow-x-auto">
-              <div className="min-w-[1100px]">
-                <Header setIsExpanded={setIsExpanded} />
-                {isFetching ? (
-                  <div
-                    className="flex justify-center items-center py-8"
-                    style={{ color: colors.text.secondary }}
-                  >
-                    Loading transactions...
-                  </div>
-                ) : transactions.length === 0 ? (
-                  <div
-                    className="flex justify-center items-center py-8"
-                    style={{ color: colors.text.secondary }}
-                  >
-                    No transactions found.
-                  </div>
-                ) : (
-                  transactions.map((transaction) => (
-                    <TransactionCard
-                      key={transaction.id}
-                      transaction={transaction}
-                      isExpanded={isExpanded[transaction.id]}
-                      setIsExpanded={setIsExpanded}
-                    />
-                  ))
-                )}
-              </div>
-            </div>
-          </div>
+          {/* Recent Transaction */}
+          <TransactionPart
+            transactions={transactions}
+            isFetching={isFetching}
+            isExpanded={isExpanded}
+            setIsExpanded={setIsExpanded}
+          />
         </div>
+        {/* Alert */}
+        <AlertPart
+          reviewedAlerts={reviewedAlerts}
+          pendingAlerts={pendingAlerts}
+          showPending={showPending}
+          setShowPending={setShowPending}
+          reviewAlert={reviewAlert}
+          isFetching={isFetching}
+        />
       </div>
     </div>
   );

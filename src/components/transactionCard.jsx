@@ -55,7 +55,7 @@ export const TransactionCard = ({ transaction, isExpanded, setIsExpanded }) => {
           {transaction.category}
         </p>
 
-        <p className="text-sm" style={{ color: colors.text.primary }}>
+        <p className="text-sm truncate" style={{ color: colors.text.primary }}>
           ₹{transaction.amount}
         </p>
 
@@ -73,7 +73,7 @@ export const TransactionCard = ({ transaction, isExpanded, setIsExpanded }) => {
         <div className="flex justify-start">
           <StatusBadge
             status={transaction.status}
-            count={transaction.fraudAlert?.riskScore ?? 0}
+            count={transaction.riskScore}
           />
         </div>
       </div>
@@ -94,16 +94,15 @@ export const TransactionCard = ({ transaction, isExpanded, setIsExpanded }) => {
           </h1>
 
           <div className="flex flex-wrap gap-2">
-            {transaction.fraudAlert?.triggeredRules ? (
-              transaction.fraudAlert.triggeredRules
-                .split(",")
+            {transaction?.triggeredRules && transaction.triggeredRules.length > 0 ? (
+              transaction.triggeredRules
                 .map((rule, index) => (
                   <div
                     key={index}
-                    className="px-3 py-1 rounded-lg text-sm"
+                    className="px-3 py-1 text-xs rounded-md text-sm"
                     style={{
                       backgroundColor: colors.status.flaggedMuted,
-                      color: colors.status.flaggedText,
+                      color: colors.rules[rule.trim()],
                     }}
                   >
                     {rule.trim()}

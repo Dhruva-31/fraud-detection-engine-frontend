@@ -23,7 +23,6 @@ export const Register = () => {
   };
 
   const validatePassword = (password) => {
-    // At least 8 chars, at least one letter, one number, and one special character
     return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(password);
   };
 
