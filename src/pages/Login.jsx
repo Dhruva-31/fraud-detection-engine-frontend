@@ -28,7 +28,6 @@ export const Login = () => {
     setLoading(true);
     try {
       const res = await api.post("/auth/login", formData);
-      console.log(res.data);
       login(res.data.token, res.data.user);
       navigate("/");
     } catch (err) {

@@ -13,15 +13,17 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (isAuthenticated && user?.id) {
-    socketRef.current = io("http://localhost:5000");
-    
-    // join a room named after this user
-    socketRef.current.emit("join_room", { userId: user.id });
-    
-    socketRef.current.on("fraud_alert", (alert) => {
-      setFraudAlert(alert);
-    });
-  }
+      const socketUrl =
+        process.env.REACT_APP_SOCKET_URL || "http://localhost:5000";
+      socketRef.current = io(socketUrl);
+
+      // join a room named after this user
+      socketRef.current.emit("join_room", { userId: user.id });
+
+      socketRef.current.on("fraud_alert", (alert) => {
+        setFraudAlert(alert);
+      });
+    }
 
     return () => {
       if (socketRef.current) {

@@ -61,7 +61,7 @@ export default function Navbar() {
           style={{ backgroundColor: colors.bg.border }}
         />
         <button onClick={handleLogout}>
-          <LogOut color={colors.text.secondary} size="20px" />
+          <LogOut color={colors.text.secondary} size={20} />
         </button>
       </div>
     </nav>

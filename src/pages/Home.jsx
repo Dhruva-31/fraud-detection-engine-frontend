@@ -67,7 +67,7 @@ const SubmitCard = ({
       style={{ backgroundColor: colors.bg.surface }}
     >
       <div className="flex flex-row gap-2 items-center w-full">
-        <Plus color={colors.brand.red} size="20" />
+        <Plus color={colors.brand.red} size={20} />
         <h2
           style={{ color: colors.text.primary }}
           className="text-xl font-bold"
@@ -282,8 +282,8 @@ const AlertPart = ({
                     {/* Tags */}
 
                     <div className="mt-3 flex flex-wrap gap-2">
-                      {fraudAlert.triggeredRules.map((rule) => (
-                        <Tag text={rule} />
+                      {fraudAlert.triggeredRules.map((rule, idx) => (
+                        <Tag key={`${rule}-${idx}`} text={rule} />
                       ))}
                     </div>
                   </div>
@@ -452,7 +452,7 @@ const Home = () => {
       const response = await api.get("/transactions");
       setTransactions(response.data.transactions);
     } catch (err) {
-      setError(err.response?.data?.message || "Transaction Retrivel failed");
+      setError(err.response?.data?.message || "Transaction retrievel failed");
     } finally {
       setIsFetching(false);
     }
@@ -465,7 +465,7 @@ const Home = () => {
       const response = await api.get("/fraud/alerts");
       setAlerts(response.data.alerts);
     } catch (err) {
-      setError(err.response?.data?.message || "Alerts Retrivel failed");
+      setError(err.response?.data?.message || "Alerts retrievel failed");
     } finally {
       setIsFetching(false);
     }

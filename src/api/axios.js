@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:5000/api",
 });
 
 api.interceptors.request.use(
@@ -18,7 +18,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && window.location.pathname !== "/login" && window.location.pathname !== "/register") {
+    if (
+      error.response?.status === 401 &&
+      window.location.pathname !== "/login" &&
+      window.location.pathname !== "/register"
+    ) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       window.location.href = "/login";

@@ -88,7 +88,7 @@ export const Register = () => {
             <InputField
               label="Full Name"
               name="name"
-              type="name"
+              type="text"
               value={formData.name}
               placeholder="sunny"
               onChange={handleChange}
@@ -135,7 +135,7 @@ export const Register = () => {
         </form>
         <div className="text-center text-lg">
           <span style={{ color: colors.text.secondary }}>
-            Don't have an account?{" "}
+            Already have an account?{" "}
           </span>
           <a
             href="/login"

@@ -29,7 +29,7 @@ export const App = () => {
               <Home />
             </ProtectedRoute>
           }
-        />j
+        />
         <Route
           path="/login"
           element={
