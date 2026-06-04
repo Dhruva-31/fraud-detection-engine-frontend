@@ -49,7 +49,7 @@ export const TransactionCard = ({ transaction, isExpanded, setIsExpanded }) => {
         </p>
 
         <p
-          className="text-sm capitalize"
+          className="text-sm capitalize truncate"
           style={{ color: colors.text.secondary }}
         >
           {transaction.category}

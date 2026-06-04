@@ -1,4 +1,4 @@
-import { Bell, CheckCircle, ChevronsUp, Plus } from "lucide-react";
+import { Bell, CheckCircle, ChevronsUp, Plus, ShieldAlert } from "lucide-react";
 import InputField from "../components/inputfield";
 import colors from "../styles/colors";
 import { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import api from "../api/axios";
 import StatusBadge from "../components/status";
 import { TransactionCard } from "../components/transactionCard";
 import AlertCard from "../components/alertCard";
+import { useSocket } from "../context/socketContext";
 
 const TABLE_GRID =
   "grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_180px] items-center";
@@ -228,14 +229,77 @@ const AlertPart = ({
   showPending,
   reviewAlert,
 }) => {
+  const { fraudAlert, setFraudAlert } = useSocket();
+
+  const Tag = ({ text }) => (
+    <span
+      className="
+      rounded-md
+      border
+      border-red-500/30
+      bg-black/30
+      px-2
+      py-1
+      text-xs
+      text-red-400
+    "
+    >
+      {text}
+    </span>
+  );
   return (
     <div
-      className="flex flex-col w-full gap-2 rounded-xl overflow-hidden"
+      className="flex flex-col w-full gap-2 rounded-xl overflow-hidden relative"
       style={{
         backgroundColor: colors.bg.surface,
         border: `1px solid ${colors.bg.border}`,
       }}
     >
+      {fraudAlert && (
+        <div className="absolute top-0 z-50 w-full">
+          <div className="relative overflow-hidden rounded-xl border border-red-500/30 bg-red-950/40 backdrop-blur-md">
+            <div className="relative p-4">
+              {/* Header */}
+              <div className="flex items-start justify-between">
+                <div className="flex flex-row gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500/20">
+                    <ShieldAlert className="h-5 w-5 text-red-400" />
+                  </div>
+                  <div>
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-sm text-gray-100">
+                          LIVE ALERT
+                        </span>
+
+                        <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                      </div>
+
+                      <p className="mt-1 text-gray-200 text-sm">
+                        High risk transaction detected (₹{fraudAlert.amount})
+                      </p>
+                    </div>
+                    {/* Tags */}
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {fraudAlert.triggeredRules.map((rule) => (
+                        <Tag text={rule} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setFraudAlert(null)}
+                  className="text-gray-400 hover:text-white"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div
         className="flex flex-row gap-3 items-center p-4"
         style={{ borderBottom: `1px solid ${colors.bg.border}` }}

@@ -37,7 +37,7 @@ export default function Navbar() {
             color: isActive ? colors.text.primary : colors.text.secondary,
             textDecoration: isActive ? "underline" : "none",
             textDecorationColor: isActive ? colors.brand.red : undefined,
-            textUnderlineOffset: "4px",
+            textUnderlineOffset: "25px",
           })}
           className="hover:opacity-80 transition-all text-md"
         >
@@ -50,7 +50,7 @@ export default function Navbar() {
             color: isActive ? colors.text.primary : colors.text.secondary,
             textDecoration: isActive ? "underline" : "none",
             textDecorationColor: isActive ? colors.brand.red : undefined,
-            textUnderlineOffset: "4px",
+            textUnderlineOffset: "25px",
           })}
           className="hover:opacity-70 transition-all text-md"
         >
