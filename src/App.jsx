@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Navbar from "./components/navbar";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -15,8 +16,10 @@ const PublicRoute = ({ children }) => {
 };
 
 export const App = () => {
+  const { isAuthenticated } = useAuth();
   return (
     <BrowserRouter>
+      {isAuthenticated && <Navbar />}
       <Routes>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route

@@ -5,15 +5,20 @@ import { io } from "socket.io-client";
 const SocketContext = createContext(null);
 
 export const SocketProvider = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const socketRef = useRef(null);
 
   const [fraudAlert, setFraudAlert] = useState(null);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      socketRef.current = io("http://localhost:5000");
+    if (isAuthenticated && user?.id) {
+      const socketUrl =
+        process.env.REACT_APP_SOCKET_URL || "http://localhost:5000";
+      socketRef.current = io(socketUrl);
+
+      // join a room named after this user
+      socketRef.current.emit("join_room", { userId: user.id });
 
       socketRef.current.on("fraud_alert", (alert) => {
         setFraudAlert(alert);
@@ -26,7 +31,7 @@ export const SocketProvider = ({ children }) => {
         socketRef.current = null;
       }
     };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user?.id]);
 
   return (
     <SocketContext.Provider
