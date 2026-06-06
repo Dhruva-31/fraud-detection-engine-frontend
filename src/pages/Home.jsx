@@ -143,7 +143,7 @@ const SubmitCard = ({
           {loading ? "Loading..." : "Submit Transaction"}
         </button>
       </form>
-      {fraudResult.riskScore !== 0 ? (
+      {fraudResult.riskScore ? (
         <div className="flex justify-center items-center gap-2 h-8">
           <span className="text-sm text-[#94A3B8]">Last Scan Result: </span>
           <StatusBadge
@@ -500,10 +500,12 @@ const Home = () => {
     }
   };
 
-  const reviewAlert = async (alert) => {
+  const reviewAlert = async (alert, outcome) => {
     setError("");
     try {
-      await api.put(`/fraud/alerts/${alert.id}`);
+      await api.put(`/fraud/alerts/${alert.id}`, {
+        outcome,
+      });
       setAlerts((prev) =>
         prev.map((a) => (a.id === alert.id ? { ...a, reviewed: true } : a)),
       );
