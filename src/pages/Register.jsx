@@ -5,6 +5,7 @@ import { useAuth } from "../context/authContext";
 import InputField from "../components/inputfield";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const Register = () => {
   const { login } = useAuth();
@@ -52,7 +53,7 @@ export const Register = () => {
   return (
     <div
       style={{ backgroundColor: colors.bg.primary }}
-      className="flex items-center justify-center p-4 h-screen"
+      className="flex items-center justify-center p-4 min-h-screen overflow-y-auto"
     >
       <div
         style={{
@@ -60,19 +61,22 @@ export const Register = () => {
           border: `1px solid ${colors.bg.border}`,
           borderRadius: "8px",
         }}
-        className="w-full max-w-md flex flex-col rounded-lg p-8 shadow-lg gap-4 items-center"
+        className="w-full max-w-md flex flex-col rounded-lg p-6 md:p-8 shadow-lg gap-4 items-center"
       >
         <div className="flex flex-col gap-3 items-center justify-center">
           <div
             style={{ backgroundColor: colors.brand.redGlow }}
-            className="w-12 h-12 rounded-full flex items-center justify-center"
+            className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center"
           >
-            <Shield className="w-6 h-6 text-[#FF3B3B]" />
+            <Shield
+              className="w-5 h-5 md:w-6 md:h-6"
+              color={colors.brand.red}
+            />
           </div>
 
           <h2
             style={{ color: colors.text.primary }}
-            className="text-2xl font-bold text-center"
+            className="text-xl md:text-2xl font-bold text-center"
           >
             Create Account
           </h2>
@@ -113,7 +117,7 @@ export const Register = () => {
           {error && (
             <div
               style={{ color: colors.brand.red }}
-              className="text-sm text-center mb-4"
+              className="text-sm text-center mb-4 break-words"
             >
               {error}
             </div>
@@ -137,13 +141,13 @@ export const Register = () => {
           <span style={{ color: colors.text.secondary }}>
             Already have an account?{" "}
           </span>
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="font-medium hover:opacity-70 hover:underline"
             style={{ color: colors.brand.red }}
           >
             Sign In
-          </a>
+          </Link>
         </div>
       </div>
     </div>

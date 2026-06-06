@@ -144,7 +144,7 @@ const SubmitCard = ({
         </button>
       </form>
       {fraudResult.riskScore ? (
-        <div className="flex justify-center items-center gap-2 h-8">
+        <div className="flex flex-wrap justify-center items-center gap-2">
           <span className="text-sm text-[#94A3B8]">Last Scan Result: </span>
           <StatusBadge
             status={fraudResult.status}
@@ -261,7 +261,7 @@ const AlertPart = ({
             <div className="relative p-4">
               {/* Header */}
               <div className="flex items-start justify-between">
-                <div className="flex flex-row gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500/20">
                     <ShieldAlert className="h-5 w-5 text-red-400" />
                   </div>
@@ -366,14 +366,14 @@ const AlertPart = ({
       {showPending ? (
         isFetching ? (
           <div
-            className="min-h-[700px] flex justify-center items-center py-8"
+            className="min-h-[400px] md:min-h-[700px] flex justify-center items-center py-8"
             style={{ color: colors.text.secondary }}
           >
             Loading alerts...
           </div>
         ) : pendingAlerts.length === 0 ? (
           <div
-            className="min-h-[700px] flex flex-col h-full gap-2 justify-center items-center py-4"
+            className="h-[500px] md:h-[700px] flex flex-col h-full gap-2 justify-center items-center py-4"
             style={{
               color: colors.text.secondary,
             }}
@@ -382,7 +382,7 @@ const AlertPart = ({
             <p>No pending alerts.</p>
           </div>
         ) : (
-          <div className="h-[700px] p-4 flex flex-col gap-4 overflow-y-auto">
+          <div className="h-[500px] md:h-[700px] p-4 flex flex-col gap-4 overflow-y-auto">
             {pendingAlerts.map((alert) => (
               <AlertCard
                 key={alert.id}
@@ -395,14 +395,14 @@ const AlertPart = ({
         )
       ) : isFetching ? (
         <div
-          className="min-h-[700px] flex justify-center items-center py-8"
+          className="min-h-[400px] md:min-h-[700px] flex justify-center items-center py-8"
           style={{ color: colors.text.secondary }}
         >
           Loading alerts...
         </div>
       ) : reviewedAlerts.length === 0 ? (
         <div
-          className="min-h-[700px] flex flex-col gap-2 justify-center items-center py-4"
+          className="h-[500px] md:h-[700px] flex flex-col gap-2 justify-center items-center py-4"
           style={{
             color: colors.text.secondary,
           }}
@@ -411,7 +411,7 @@ const AlertPart = ({
           <p>No reviewed alerts.</p>
         </div>
       ) : (
-        <div className="h-[700px] flex flex-col gap-4 p-4 overflow-y-auto">
+        <div className="h-[500px] md:h-[700px] flex flex-col gap-4 p-4 overflow-y-auto">
           {reviewedAlerts.map((alert) => (
             <AlertCard key={alert.id} alert={alert} status={"reviewed"} />
           ))}
@@ -500,14 +500,15 @@ const Home = () => {
     }
   };
 
-  const reviewAlert = async (alert, outcome) => {
+  const reviewAlert = async (alert, outcome, reviewNotes) => {
     setError("");
     try {
-      await api.put(`/fraud/alerts/${alert.id}`, {
+      const response = await api.put(`/fraud/alerts/${alert.id}`, {
         outcome,
+        reviewNotes,
       });
       setAlerts((prev) =>
-        prev.map((a) => (a.id === alert.id ? { ...a, reviewed: true } : a)),
+        prev.map((a) => (a.id === alert.id ? response.data.alert : a)),
       );
       setTransactions((prev) =>
         prev.map((t) =>
@@ -521,8 +522,7 @@ const Home = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      await fetchTransactions();
-      await fetchAlerts();
+      await Promise.all([fetchTransactions(), fetchAlerts()]);
     };
     loadData();
   }, []);
@@ -534,7 +534,7 @@ const Home = () => {
   return (
     <div
       style={{ backgroundColor: colors.bg.primary }}
-      className="flex flex-col gap-4 p-6 min-h-screen"
+      className="flex flex-col gap-4 p-4 md:p-6 xl:p-8 min-h-screen"
     >
       {error && (
         <div
@@ -549,7 +549,7 @@ const Home = () => {
           {error}
         </div>
       )}
-      <div className="flex flex-row items-start w-full gap-10">
+      <div className="flex flex-col xl:flex-row items-start w-full gap-6 xl:gap-10">
         <div className="flex flex-col w-full gap-4">
           {/*Save Transaction */}
           <SubmitCard
@@ -569,14 +569,16 @@ const Home = () => {
           />
         </div>
         {/* Alert */}
-        <AlertPart
-          reviewedAlerts={reviewedAlerts}
-          pendingAlerts={pendingAlerts}
-          showPending={showPending}
-          setShowPending={setShowPending}
-          reviewAlert={reviewAlert}
-          isFetching={isFetching}
-        />
+        <div className="w-full xl:w-[700px] shrink-0">
+          <AlertPart
+            reviewedAlerts={reviewedAlerts}
+            pendingAlerts={pendingAlerts}
+            showPending={showPending}
+            setShowPending={setShowPending}
+            reviewAlert={reviewAlert}
+            isFetching={isFetching}
+          />
+        </div>
       </div>
     </div>
   );

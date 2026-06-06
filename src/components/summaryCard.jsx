@@ -42,20 +42,19 @@ const SummaryCard = ({ title, value, icon, message }) => {
 
   return (
     <div
-      className="flex flex-col w-full justify-center gap-6 p-4 rounded-xl"
+      className="flex flex-col w-full justify-center gap-4 md:gap-6 p-3 md:p-4 rounded-xl"
       style={{
         backgroundColor: colors.bg.surface,
         border: `1px solid ${colors.bg.border}`,
       }}
     >
-      <div className="w-full flex flex-row justify-between">
+      <div className="w-full flex items-start justify-between gap-2">
         <h1
-          className="text-sm font-bold"
+          className="text-xs md:text-sm font-bold"
           style={{ color: colors.text.secondary }}
         >
           {title}
         </h1>
-
         <div
           className="rounded-lg px-2 py-1"
           style={{ backgroundColor: colors.bg.border }}
@@ -64,10 +63,18 @@ const SummaryCard = ({ title, value, icon, message }) => {
         </div>
       </div>
       <div>
-        <p className="text-3xl font-bold" style={{ color: config.color }}>
-          {typeof value === "number" ? value.toLocaleString() : String(value ?? "-")}
+        <p
+          className="text-2xl md:text-3xl font-bold break-words"
+          style={{ color: config.color }}
+        >
+          {typeof value === "number"
+            ? value.toLocaleString()
+            : String(value ?? "-")}
         </p>
-        <p className="text-sm" style={{ color: colors.text.secondary }}>
+        <p
+          className="text-xs md:text-sm"
+          style={{ color: colors.text.secondary }}
+        >
           {message}
         </p>
       </div>

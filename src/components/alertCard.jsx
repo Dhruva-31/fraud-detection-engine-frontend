@@ -1,5 +1,7 @@
 import colors from "../styles/colors";
 import { CheckCircle } from "lucide-react";
+import InputField from "./inputfield";
+import { useState } from "react";
 
 const formatTime = (timestamp) => {
   return new Date(timestamp).toLocaleTimeString([], {
@@ -9,6 +11,7 @@ const formatTime = (timestamp) => {
 };
 
 const AlertCard = ({ alert, onReview, status }) => {
+  const [reviewNotes, setReviewNotes] = useState("");
   const statusConfig = {
     flagged: {
       side: colors.brand.red,
@@ -42,31 +45,33 @@ const AlertCard = ({ alert, onReview, status }) => {
 
   const progress = Math.min(alert.transaction.riskScore, 100);
 
+  const handleChange = (e) => {
+    setReviewNotes(e.target.value);
+  };
+
   return (
     <div
-      className="flex flex-col w-full p-4 rounded-lg gap-4"
+      className="flex flex-col w-full p-3 md:p-4 rounded-lg gap-4"
       style={{
         border: `1px solid ${colors.bg.border}`,
         borderLeft: `4px solid ${config.side}`,
       }}
     >
       <div className="flex flex-col">
-        <div className="flex flex-row w-full items-center justify-between">
-          <p className="text-lg" style={{ color: config.text }}>
+        <div className="flex flex-wrap justify-between gap-2 items-center">
+          <p className="text-base md:text-lg" style={{ color: config.text }}>
             ₹{alert.transaction.amount}
           </p>
-
           <p className="text-xs" style={{ color: colors.text.secondary }}>
             {formatTime(alert.transaction.timestamp)}
           </p>
         </div>
 
-        <div className="flex flex-row gap-2 items-center">
+        <div className="flex flex-wrap gap-2 items-center">
           <span className="text-xs" style={{ color: colors.text.secondary }}>
             at
           </span>
-
-          <p className="text-sm" style={{ color: config.text }}>
+          <p className="text-sm break-all" style={{ color: config.text }}>
             {alert.transaction.merchant}
           </p>
         </div>
@@ -113,9 +118,25 @@ const AlertCard = ({ alert, onReview, status }) => {
         </div>
       ) : null}
       {status === "flagged" ? (
-        <div className="flex flex-row justify-between items-center gap-4">
+        <InputField
+          label="Review notes"
+          name="reviewNotes"
+          type="text"
+          value={reviewNotes}
+          placeholder="type your notes"
+          onChange={handleChange}
+        />
+      ) : (
+        alert.reviewNotes && (
+          <p className="text-sm" style={{ color: colors.text.secondary }}>
+            {alert.reviewNotes}
+          </p>
+        )
+      )}
+      {status === "flagged" ? (
+        <div className="flex flex-col sm:flex-row gap-3">
           <button
-            onClick={() => onReview(alert, "FRAUD")}
+            onClick={() => onReview(alert, "FRAUD", reviewNotes)}
             className="rounded-lg p-2 hover:opacity-50 transition-all w-full"
             style={{ border: `1px solid ${colors.status.flaggedText}` }}
           >
@@ -127,7 +148,7 @@ const AlertCard = ({ alert, onReview, status }) => {
             </p>
           </button>
           <button
-            onClick={() => onReview(alert, "FALSE_POSITIVE")}
+            onClick={() => onReview(alert, "FALSE_POSITIVE", reviewNotes)}
             className="rounded-lg p-2 hover:opacity-50 transition-all w-full"
             style={{ border: `1px solid ${colors.status.cleanMuted}` }}
           >
