@@ -18,39 +18,41 @@ export default function Navbar() {
 
   return (
     <nav
-      className="flex justify-between items-center px-4 py-4"
-      style={{ backgroundColor: colors.bg.surface, borderBottom: `1px solid ${colors.bg.border}` }}
+      className="flex flex-wrap justify-between items-center gap-4 px-4 py-4"
+      style={{
+        backgroundColor: colors.bg.surface,
+        borderBottom: `1px solid ${colors.bg.border}`,
+      }}
     >
-      <div className="flex flex-row gap-2">
-        <Shield className="w-6 h-6 text-[#FF3B3B]" />
+      <div className="flex flex-wrap items-center gap-2 shrink-0">
+        <Shield className="w-6 h-6" color={colors.brand.red} />
         <h1
-          className="text-lg font-bold"
+          className="hidden sm:block text-base md:text-lg font-bold"
           style={{ color: colors.text.primary }}
         >
           Fraud Detection
         </h1>
       </div>
-      <div className="flex flex-row items-center gap-6">
+      <div className="flex items-center gap-3 md:gap-6 flex-wrap">
         <NavLink
           to="/home"
           style={({ isActive }) => ({
             color: isActive ? colors.text.primary : colors.text.secondary,
             textDecoration: isActive ? "underline" : "none",
             textDecorationColor: isActive ? colors.brand.red : undefined,
-            textUnderlineOffset: "25px",
+            textUnderlineOffset: "0.5rem",
           })}
           className="hover:opacity-80 transition-all text-md"
         >
           Home
         </NavLink>
-
         <NavLink
           to="/analytics"
           style={({ isActive }) => ({
             color: isActive ? colors.text.primary : colors.text.secondary,
             textDecoration: isActive ? "underline" : "none",
             textDecorationColor: isActive ? colors.brand.red : undefined,
-            textUnderlineOffset: "25px",
+            textUnderlineOffset: "0.5rem",
           })}
           className="hover:opacity-70 transition-all text-md"
         >

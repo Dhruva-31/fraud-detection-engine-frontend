@@ -33,13 +33,13 @@ export default function StatusBadge({ status, count = 0 }) {
 
   return (
     <div
-      className="flex flex-row gap-1 items-center rounded-2xl px-2 py-1 whitespace-nowrap w-fit"
+      className="flex flex-row gap-1 md:gap-1.5 items-center rounded-2xl px-2 py-1 whitespace-nowrap w-fit"
       style={{
         backgroundColor: config.bg,
         border: `1px solid ${config.border}`,
       }}
     >
-      <Icon size={14} color={config.text} />
+      <Icon size={12} className="md:w-[14px] md:h-[14px]" color={config.text} />
       <p className="text-xs" style={{ color: config.text }}>
         {config.label}
       </p>

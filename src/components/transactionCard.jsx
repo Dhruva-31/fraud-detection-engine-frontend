@@ -5,19 +5,17 @@ import StatusBadge from "./status";
 const TABLE_GRID =
   "grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_180px] items-center";
 
-  const formatTime = (timestamp) => {
+const formatTime = (timestamp) => {
   return new Date(timestamp).toLocaleTimeString();
 };
 
 export const TransactionCard = ({ transaction, isExpanded, setIsExpanded }) => {
-
   const toggleExpand = () => {
     setIsExpanded((prev) => ({
       ...prev,
       [transaction.id]: !prev[transaction.id],
     }));
   };
-  
 
   return (
     <div className="w-full flex flex-col">
@@ -66,7 +64,7 @@ export const TransactionCard = ({ transaction, isExpanded, setIsExpanded }) => {
           {transaction.location}
         </p>
 
-        <p className="text-sm" style={{ color: colors.text.primary }}>
+        <p className="text-sm truncate" style={{ color: colors.text.primary }}>
           {formatTime(transaction.timestamp)}
         </p>
 
@@ -80,7 +78,7 @@ export const TransactionCard = ({ transaction, isExpanded, setIsExpanded }) => {
 
       {isExpanded && (
         <div
-          className="px-5 py-2"
+          className="px-4 md:px-5 py-2"
           style={{
             backgroundColor: colors.bg.input,
             borderTop: `1px solid ${colors.bg.border}`,
@@ -94,20 +92,20 @@ export const TransactionCard = ({ transaction, isExpanded, setIsExpanded }) => {
           </h1>
 
           <div className="flex flex-wrap gap-2">
-            {transaction?.triggeredRules && transaction.triggeredRules.length > 0 ? (
-              transaction.triggeredRules
-                .map((rule, index) => (
-                  <div
-                    key={index}
-                    className="px-3 py-1 text-xs rounded-md text-sm"
-                    style={{
-                      backgroundColor: colors.status.flaggedMuted,
-                      color: colors.rules[rule.trim()],
-                    }}
-                  >
-                    {rule.trim()}
-                  </div>
-                ))
+            {transaction?.triggeredRules &&
+            transaction.triggeredRules.length > 0 ? (
+              transaction.triggeredRules.map((rule, index) => (
+                <div
+                  key={index}
+                  className="px-3 py-1 text-xs rounded-md"
+                  style={{
+                    backgroundColor: colors.status.flaggedMuted,
+                    color: colors.rules[rule.trim()],
+                  }}
+                >
+                  {rule.trim()}
+                </div>
+              ))
             ) : (
               <p className="text-sm" style={{ color: colors.status.cleanText }}>
                 None. Transaction is considered safe.
