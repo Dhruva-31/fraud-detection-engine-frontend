@@ -13,7 +13,7 @@ const statusConfig = {
     icon: Bell,
     color: colors.status.flaggedText,
   },
-  sheild: {
+  shield: {
     icon: ShieldAlert,
     color: colors.status.flaggedText,
   },
@@ -65,7 +65,7 @@ const SummaryCard = ({ title, value, icon, message }) => {
       </div>
       <div>
         <p className="text-3xl font-bold" style={{ color: config.color }}>
-          {value.toLocaleString()}
+          {typeof value === "number" ? value.toLocaleString() : String(value ?? "-")}
         </p>
         <p className="text-sm" style={{ color: colors.text.secondary }}>
           {message}

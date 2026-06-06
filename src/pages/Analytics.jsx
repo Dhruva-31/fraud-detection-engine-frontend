@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import colors from "../styles/colors";
 import api from "../api/axios";
 import SummaryCard from "../components/summaryCard";
@@ -152,7 +152,7 @@ const StatusRatioChart = ({ summary }) => {
                 borderRadius: "12px",
                 color: colors.text.primary,
               }}
-            />{" "}
+            />
             <text
               x="50%"
               y="46%"
@@ -170,8 +170,7 @@ const StatusRatioChart = ({ summary }) => {
               fontSize={isMobile ? 24 : 34}
               fontWeight="bold"
             >
-              {" "}
-              {total.toLocaleString()}{" "}
+              {total.toLocaleString()}
             </text>
           </PieChart>
         </ResponsiveContainer>
@@ -205,7 +204,7 @@ const RuleBreakdownChart = ({ data }) => {
     colors.rules.ODD_HOUR,
   ];
 
-  const total = data.reduce((sum, item) => sum + item.value, 0);
+  const total = data.reduce((sum, item) => sum + (item.count ?? 0), 0);
 
   if (total === 0) {
     return (
@@ -290,7 +289,7 @@ const Analytics = () => {
       const response = await api.get("/analytics/summary");
       setSummary(response.data.summary);
     } catch (err) {
-      setError(err.response?.data?.message || "Summary retrievel failed");
+      setError(err.response?.data?.message || "Summary retrieval failed");
     } finally {
       setIsFetching(false);
     }
@@ -304,21 +303,21 @@ const Analytics = () => {
       setRuleBreakdown(response.data.breakdown);
     } catch (err) {
       setError(
-        err.response?.data?.message || "Rule breakdown retrievel failed",
+        err.response?.data?.message || "Rule breakdown retrieval failed",
       );
     } finally {
       setIsFetching(false);
     }
   };
 
-  const fetchWeelyData = async () => {
+  const fetchWeeklyData = async () => {
     setError("");
     setIsFetching(true);
     try {
       const response = await api.get("/analytics/weekly");
       setWeekly(response.data.weekly);
     } catch (err) {
-      setError(err.response?.data?.message || "Weekly retrievel failed");
+      setError(err.response?.data?.message || "Weekly retrieval failed");
     } finally {
       setIsFetching(false);
     }
@@ -328,7 +327,7 @@ const Analytics = () => {
       await Promise.all([
         fetchSummary(),
         fetchRuleBreakdown(),
-        fetchWeelyData(),
+        fetchWeeklyData(),
       ]);
     };
     loadData();
@@ -340,12 +339,26 @@ const Analytics = () => {
         style={{ backgroundColor: colors.bg.primary }}
         className="flex flex-col gap-4 p-4 md:p-6 xl:p-10 min-h-screen"
       >
-        <div
-          className="flex justify-center items-center py-8"
-          style={{ color: colors.text.secondary }}
-        >
-          Loading Summary...
-        </div>
+        {error ? (
+          <div
+            style={{
+              background: colors.status.flaggedMuted,
+              color: colors.status.flaggedText,
+              padding: "10px 14px",
+              borderRadius: "8px",
+              fontSize: "13px",
+            }}
+          >
+            {error}
+          </div>
+        ) : (
+          <div
+            className="flex justify-center items-center py-8"
+            style={{ color: colors.text.secondary }}
+          >
+            Loading Summary...
+          </div>
+        )}
       </div>
     );
   }
@@ -416,7 +429,7 @@ const Analytics = () => {
         <SummaryCard
           title="Fraud"
           value={summary.fraud}
-          icon="sheild"
+          icon="shield"
           message={`${
             summary.totalAlerts === 0
               ? "0.0"
@@ -430,7 +443,7 @@ const Analytics = () => {
           message={"Target < 2.0%"}
         />
         <SummaryCard
-          title="Average Riskscore"
+          title="Average Risk Score"
           value={summary.avgRiskScore}
           icon="gauge"
           message={"in a week"}
