@@ -17,7 +17,7 @@ import {
   CartesianGrid,
 } from "recharts";
 
-const isMobile = window.innerWidth < 768;
+const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
 const WeeklyTransactionChart = ({ data }) => {
   const weeklyData = data.map((item) => ({
@@ -64,7 +64,7 @@ const WeeklyTransactionChart = ({ data }) => {
             tickLine={false}
             tick={{
               fill: colors.text.secondary,
-              fontSize: window.innerWidth < 768 ? 10 : 12,
+              fontSize: isMobile ? 10 : 12,
             }}
           />
 
@@ -73,7 +73,7 @@ const WeeklyTransactionChart = ({ data }) => {
             tickLine={false}
             tick={{
               fill: colors.text.secondary,
-              fontSize: window.innerWidth < 768 ? 10 : 12,
+              fontSize: isMobile ? 10 : 12,
             }}
           />
 
@@ -158,7 +158,7 @@ const StatusRatioChart = ({ summary }) => {
               y="46%"
               textAnchor="middle"
               fill={colors.text.secondary}
-              fontSize={window.innerWidth < 768 ? 10 : 12}
+              fontSize={isMobile ? 10 : 12}
             >
               Total
             </text>
@@ -233,7 +233,7 @@ const RuleBreakdownChart = ({ data }) => {
             type="number"
             tick={{
               fill: colors.text.secondary,
-              fontSize: window.innerWidth < 768 ? 10 : 12,
+              fontSize: isMobile ? 10 : 12,
             }}
             axisLine={false}
             tickLine={false}
@@ -244,7 +244,7 @@ const RuleBreakdownChart = ({ data }) => {
             type="category"
             tick={{
               fill: colors.text.secondary,
-              fontSize: window.innerWidth < 768 ? 10 : 12,
+              fontSize: isMobile ? 10 : 12,
             }}
             axisLine={false}
             tickLine={false}
