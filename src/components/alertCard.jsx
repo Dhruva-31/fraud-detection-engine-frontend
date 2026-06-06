@@ -113,18 +113,32 @@ const AlertCard = ({ alert, onReview, status }) => {
         </div>
       ) : null}
       {status === "flagged" ? (
-        <button
-          onClick={() => onReview(alert)}
-          className="rounded-lg p-2 hover:opacity-50 transition-all"
-          style={{ border: `1px solid ${colors.bg.border}` }}
-        >
-          <p
-            className="font-bold text-sm"
-            style={{ color: colors.text.primary }}
+        <div className="flex flex-row justify-between items-center gap-4">
+          <button
+            onClick={() => onReview(alert, "FRAUD")}
+            className="rounded-lg p-2 hover:opacity-50 transition-all w-full"
+            style={{ border: `1px solid ${colors.status.flaggedText}` }}
           >
-            Mark As Reviewed
-          </p>
-        </button>
+            <p
+              className="font-bold text-sm"
+              style={{ color: colors.text.primary }}
+            >
+              Fraud
+            </p>
+          </button>
+          <button
+            onClick={() => onReview(alert, "FALSE_POSITIVE")}
+            className="rounded-lg p-2 hover:opacity-50 transition-all w-full"
+            style={{ border: `1px solid ${colors.status.cleanMuted}` }}
+          >
+            <p
+              className="font-bold text-sm"
+              style={{ color: colors.text.primary }}
+            >
+              False positive
+            </p>
+          </button>
+        </div>
       ) : (
         <div
           className="flex flex-row gap-2 items-center justify-center rounded-lg py-1"
