@@ -529,7 +529,6 @@ const Home = () => {
         amount: "",
         merchant: "",
         category: "food",
-        location: "",
       });
       await fetchTransactions();
       await fetchAlerts();
