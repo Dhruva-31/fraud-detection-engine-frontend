@@ -9,7 +9,7 @@ import AlertCard from "../components/alertCard";
 import { useSocket } from "../context/socketContext";
 
 const TABLE_GRID =
-  "grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_180px] items-center";
+  "grid grid-cols-[40px_1fr_1fr_1fr_2fr_1fr_180px] items-center";
 
 const Header = ({ setIsExpanded }) => {
   return (
@@ -60,6 +60,7 @@ const SubmitCard = ({
   handleSubmit,
   loading,
   fraudResult,
+  detectingLocation,
 }) => {
   return (
     <div
@@ -119,7 +120,9 @@ const SubmitCard = ({
           </div>
           <InputField
             label="LOCATION"
-            placeholder="e.g. Chennai"
+            placeholder={
+              detectingLocation ? "Detecting location..." : "e.g. Chennai"
+            }
             name="location"
             type="text"
             value={transactionData.location}
@@ -424,6 +427,7 @@ const AlertPart = ({
 const Home = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [detectingLocation, setDetectingLocation] = useState(false);
   const [error, setError] = useState("");
   const [isExpanded, setIsExpanded] = useState({});
   const [transactions, setTransactions] = useState([]);
@@ -440,6 +444,42 @@ const Home = () => {
     category: "food",
     location: "",
   });
+
+  const detectLocation = async () => {
+    setDetectingLocation(true);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
+          );
+
+          const data = await response.json();
+
+          const city =
+            data.address.city ||
+            data.address.town ||
+            data.address.village ||
+            "";
+
+          const state = data.address.state || "";
+
+          setTransactionData((prev) => ({
+            ...prev,
+            location: `${city}, ${state}`,
+          }));
+        } finally {
+          setDetectingLocation(false);
+        }
+      },
+      () => {
+        setDetectingLocation(false);
+      },
+    );
+  };
 
   const handleChange = (e) => {
     setTransactionData({ ...transactionData, [e.target.name]: e.target.value });
@@ -525,6 +565,7 @@ const Home = () => {
       await Promise.all([fetchTransactions(), fetchAlerts()]);
     };
     loadData();
+    detectLocation();
   }, []);
 
   const pendingAlerts = alerts.filter((alert) => !alert.reviewed);
@@ -559,6 +600,7 @@ const Home = () => {
             loading={isSubmitting}
             error={error}
             fraudResult={fraudResult}
+            detectingLocation={detectingLocation}
           />
           {/* Recent Transaction */}
           <TransactionPart
