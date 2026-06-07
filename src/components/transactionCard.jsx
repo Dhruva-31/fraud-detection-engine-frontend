@@ -3,7 +3,7 @@ import colors from "../styles/colors";
 import StatusBadge from "./status";
 
 const TABLE_GRID =
-  "grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_180px] items-center";
+  "grid grid-cols-[40px_1fr_1fr_1fr_2fr_1fr_180px] items-center";
 
 const formatTime = (timestamp) => {
   return new Date(timestamp).toLocaleTimeString();

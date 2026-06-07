@@ -29,7 +29,7 @@ export const Login = () => {
     setLoading(true);
     try {
       const res = await api.post("/auth/login", formData);
-      login(res.data.token, res.data.user);
+      login(res.data);
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Failed to login");
