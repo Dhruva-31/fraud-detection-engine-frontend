@@ -58,7 +58,7 @@ const colors = {
     AMOUNT_ANOMALY: "#F59E0B",
     NEW_CATEGORY: "#F59E0B",
     ODD_HOUR: "#94A3B8",
-    ROUND_AMOUNT: "#94A3B8",
+    LOCATION_ANOMALY: "#94A3B8",
   },
 };
 

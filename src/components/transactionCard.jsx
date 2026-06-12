@@ -94,16 +94,16 @@ export const TransactionCard = ({ transaction, isExpanded, setIsExpanded }) => {
           <div className="flex flex-wrap gap-2">
             {transaction?.triggeredRules &&
             transaction.triggeredRules.length > 0 ? (
-              transaction.triggeredRules.map((rule, index) => (
+              transaction.triggeredRules.map((trigger, index) => (
                 <div
                   key={index}
                   className="px-3 py-1 text-xs rounded-md"
                   style={{
                     backgroundColor: colors.status.flaggedMuted,
-                    color: colors.rules[rule.trim()],
+                    color: colors.rules[trigger.rule.trim()],
                   }}
                 >
-                  {rule.trim()}
+                  {trigger.rule.trim()}
                 </div>
               ))
             ) : (

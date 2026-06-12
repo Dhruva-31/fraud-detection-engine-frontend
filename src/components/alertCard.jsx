@@ -103,7 +103,7 @@ const AlertCard = ({ alert, onReview, status }) => {
       </div>
       {status === "flagged" ? (
         <div className="flex flex-wrap gap-2">
-          {alert?.transaction.triggeredRules?.map((rule, index) => (
+          {alert?.transaction.triggeredRules?.map((trigger, index) => (
             <div
               key={index}
               className="rounded-lg text-[10px] px-2 py-1 flex items-center h-6"
@@ -112,7 +112,7 @@ const AlertCard = ({ alert, onReview, status }) => {
                 color: colors.text.secondary,
               }}
             >
-              {rule.trim()}
+              {trigger.rule.trim()}
             </div>
           ))}
         </div>
