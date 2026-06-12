@@ -482,8 +482,13 @@ const Home = () => {
           setDetectingLocation(false);
         }
       },
-      () => {
+      (error) => {
         setDetectingLocation(false);
+        if (error.code === error.PERMISSION_DENIED) {
+          setError(
+            "Location access denied. Please enable it in browser settings.",
+          );
+        }
       },
     );
   };
@@ -521,6 +526,10 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    if (!transactionData.latitude || !transactionData.longitude) {
+      setError("Location access is required for fraud detection.");
+      return;
+    }
     setIsSubmitting(true);
     try {
       const payload = {
