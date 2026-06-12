@@ -285,8 +285,11 @@ const AlertPart = ({
                     {/* Tags */}
 
                     <div className="mt-3 flex flex-wrap gap-2">
-                      {fraudAlert.triggeredRules.map((rule, idx) => (
-                        <Tag key={`${rule}-${idx}`} text={rule} />
+                      {fraudAlert.triggeredRules.map((trigger, idx) => (
+                        <Tag
+                          key={`${trigger.rule}-${idx}`}
+                          text={trigger.rule}
+                        />
                       ))}
                     </div>
                   </div>
@@ -443,6 +446,8 @@ const Home = () => {
     merchant: "",
     category: "food",
     location: "",
+    latitude: "",
+    longitude: "",
   });
 
   const detectLocation = async () => {
@@ -470,6 +475,8 @@ const Home = () => {
           setTransactionData((prev) => ({
             ...prev,
             location: `${city}, ${state}`,
+            latitude,
+            longitude,
           }));
         } finally {
           setDetectingLocation(false);
@@ -530,8 +537,7 @@ const Home = () => {
         merchant: "",
         category: "food",
       });
-      await fetchTransactions();
-      await fetchAlerts();
+      await Promise.all([detectLocation(), fetchTransactions(), fetchAlerts()]);
     } catch (err) {
       setError(err.response?.data?.message || "Transaction failed");
     } finally {
