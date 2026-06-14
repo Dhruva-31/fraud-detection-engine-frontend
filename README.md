@@ -1,70 +1,391 @@
-# Getting Started with Create React App
+# 🛡️ Fraud Detection Engine
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> Real-time transaction fraud detection platform powered by behavioral analytics, anomaly detection, risk scoring, and live alert management.
 
-## Available Scripts
+![React](https://img.shields.io/badge/React-Frontend-61DAFB?logo=react)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-339933?logo=node.js)
+![Express](https://img.shields.io/badge/Express-API-black?logo=express)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma)
+![Socket.IO](https://img.shields.io/badge/Socket.IO-Realtime-010101?logo=socketdotio)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Live Demo
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Frontend:** https://fraud-detection-engine-frontend.vercel.app
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Backend Repository:**
+https://github.com/Dhruva-31/fraud-detection-engine-backend
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📖 Overview
 
-### `npm run build`
+Fraud Detection Engine is a full-stack web application that detects potentially fraudulent financial transactions using a rule-based risk scoring system.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The platform continuously evaluates transaction behavior against multiple fraud detection rules and assigns a dynamic risk score. Transactions that exceed predefined thresholds are automatically flagged for review and surfaced through a real-time alert system.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The application demonstrates:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Real-time fraud detection
+- Behavioral transaction analysis
+- Risk scoring systems
+- Event-driven architecture
+- WebSocket communication
+- Data visualization and analytics
+- Full-stack application design
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## ✨ Features
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 🔐 Authentication & Security
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- User Registration
+- Secure Login
+- JWT Authentication
+- Protected Routes
+- Session Persistence
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 💳 Transaction Monitoring
 
-## Learn More
+- Submit transactions in real time
+- Dynamic fraud scoring
+- Triggered rule inspection
+- Transaction history
+- Status tracking
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 🚨 Fraud Detection Rules
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Each transaction is evaluated using multiple fraud detection rules:
 
-### Code Splitting
+| Rule                   | Description                                 |
+| ---------------------- | ------------------------------------------- |
+| Velocity Breach        | Detects excessive transaction frequency     |
+| Amount Anomaly         | Detects unusually large transactions        |
+| New Category Detection | Detects spending in unfamiliar categories   |
+| Location Anomaly       | Detects transactions from unusual locations |
+| Odd Hour Detection     | Detects suspicious transaction timing       |
+| Impossible Travel      | Detects unrealistic geographic movement     |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 📡 Real-Time Alerts
 
-### Analyzing the Bundle Size
+- Instant fraud notifications
+- WebSocket-based updates
+- Alert review workflow
+- Fraud confirmation system
+- False positive classification
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 📊 Analytics Dashboard
 
-### Making a Progressive Web App
+- Weekly transaction volume
+- Alert statistics
+- Fraud trends
+- Rule breakdown analysis
+- Risk score metrics
+- Status distribution reports
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 📸 Application Screenshots
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 🔐 Authentication
 
-### Deployment
+Secure JWT-based authentication with dedicated login and registration flows.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+| Login                             | Registration                            |
+| --------------------------------- | --------------------------------------- |
+| ![Login](./screenshots/login.png) | ![Register](./screenshots/register.png) |
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 🏠 Transaction Monitoring Dashboard
+
+The main dashboard enables users to submit transactions, review fraud scores, inspect triggered rules, and manage fraud alerts.
+
+![Dashboard](./screenshots/dashboard.png)
+
+#### Highlights
+
+- Transaction submission form
+- Fraud score calculation
+- Triggered rule visualization
+- Recent transaction history
+- Alert management workflow
+- Fraud / False Positive review system
+
+---
+
+### 📊 Analytics Dashboard
+
+Provides insights into system performance and fraud detection effectiveness.
+
+![Analytics Overview](./screenshots/analytics-overview.png)
+
+#### Metrics
+
+- Total Transactions
+- Total Alerts
+- Reviewed Alerts
+- Fraud Count
+- False Positive Rate
+- Average Risk Score
+
+---
+
+### 📈 Weekly Transaction Trends
+
+Visual representation of transaction activity and alert generation patterns.
+
+![Analytics Trends](./screenshots/analytics-trends.png)
+
+Insights include:
+
+- Weekly transaction volume
+- Fraud detection trends
+- Rule distribution
+- Alert classifications
+
+---
+
+## 🧠 Fraud Scoring System
+
+Each fraud rule contributes points toward a transaction's overall risk score.
+
+| Risk Score | Status  |
+| ---------- | ------- |
+| 0 - 39     | CLEAN   |
+| 40 - 79    | REVIEW  |
+| 80+        | FLAGGED |
+
+### Example
+
+```text
+Velocity Breach      +40
+Amount Anomaly       +30
+Location Anomaly     +15
+-------------------------
+Total Risk Score     =85
+
+Status: FLAGGED
+```
+
+---
+
+## 🏗️ System Architecture
+
+```text
+User
+ │
+ ▼
+React Frontend
+ │
+ ▼
+Express API
+ │
+ ├── Authentication Service
+ │
+ ├── Transaction Service
+ │
+ ├── Analytics Service
+ │
+ ├── Alert Service
+ │
+ └── Fraud Detection Engine
+        │
+        ├── Velocity Check
+        ├── Amount Anomaly
+        ├── Location Anomaly
+        ├── Odd Hour Detection
+        ├── New Category Detection
+        └── Impossible Travel
+                │
+                ▼
+            Risk Score
+                │
+                ▼
+      CLEAN / REVIEW / FLAGGED
+                │
+                ▼
+         PostgreSQL Database
+                │
+                ▼
+         Socket.IO Alerts
+```
+
+---
+
+## ⚙️ Tech Stack
+
+### Frontend
+
+| Technology       | Purpose                  |
+| ---------------- | ------------------------ |
+| React            | User Interface           |
+| React Router     | Routing                  |
+| Axios            | API Communication        |
+| Recharts         | Analytics Visualizations |
+| Socket.IO Client | Real-Time Updates        |
+| CSS              | Styling                  |
+| Lucide React     | Icons                    |
+
+### Backend
+
+| Technology | Purpose                 |
+| ---------- | ----------------------- |
+| Node.js    | Runtime Environment     |
+| Express.js | REST API                |
+| PostgreSQL | Database                |
+| Prisma ORM | Database Access         |
+| JWT        | Authentication          |
+| Socket.IO  | Real-Time Communication |
+| Winston    | Logging                 |
+| Geolib     | Geolocation Analysis    |
+
+---
+
+## 📂 Frontend Project Structure
+
+```text
+src/
+│
+├── api/
+│   └── axios.js
+│
+├── components/
+│   ├── AlertCard.jsx
+│   ├── Navbar.jsx
+│   ├── Status.jsx
+│   ├── SummaryCard.jsx
+│   └── TransactionCard.jsx
+│
+├── context/
+│   ├── AuthContext.js
+│   └── SocketContext.js
+│
+├── pages/
+│   ├── Home.jsx
+│   ├── Analytics.jsx
+│   ├── Login.jsx
+│   └── Register.jsx
+│
+├── App.jsx
+└── index.js
+```
+
+---
+
+## 🔧 Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+REACT_APP_API_URL=http://localhost:5000/api
+REACT_APP_SOCKET_URL=http://localhost:5000
+```
+
+---
+
+## 🚀 Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/Dhruva-31/fraud-detection-engine-frontend.git
+
+cd fraud-detection-engine-frontend
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Configure Environment Variables
+
+```bash
+cp .env.example .env
+```
+
+Update the environment values.
+
+### Run Development Server
+
+```bash
+npm start
+```
+
+Application will be available at:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## 🔄 Transaction Flow
+
+```text
+User Login
+      │
+      ▼
+Submit Transaction
+      │
+      ▼
+Fraud Detection Engine
+      │
+      ▼
+Rule Evaluation
+      │
+      ▼
+Risk Score Generation
+      │
+      ▼
+CLEAN / REVIEW / FLAGGED
+      │
+      ▼
+Store in Database
+      │
+      ▼
+Generate Alert
+      │
+      ▼
+Real-Time Dashboard Update
+```
+
+---
+
+## 📈 Future Improvements
+
+- Machine Learning-Based Fraud Detection
+- Adaptive Risk Scoring
+- Device Fingerprinting
+- Multi-Factor Authentication
+- Explainable Fraud Insights
+- Kafka Event Streaming
+- Docker Deployment
+- Kubernetes Support
+- Admin Investigation Portal
+- Transaction Heatmaps
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to your branch
+5. Open a Pull Request
+
+---
+
+## 👨‍💻 Author
+
+**Dhruva**
+
+Built to explore fraud detection systems, behavioral analytics, risk scoring engines, real-time event processing, and scalable full-stack architectures.
