@@ -94,7 +94,7 @@ export const Register = () => {
               name="name"
               type="text"
               value={formData.name}
-              placeholder="sunny"
+              placeholder="xyz"
               onChange={handleChange}
             />
             <InputField
@@ -102,7 +102,7 @@ export const Register = () => {
               name="email"
               type="email"
               value={formData.email}
-              placeholder="naanga4peru@gmail.com"
+              placeholder="abc@gmail.com"
               onChange={handleChange}
             />
             <InputField

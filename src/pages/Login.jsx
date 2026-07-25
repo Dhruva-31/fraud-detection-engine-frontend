@@ -82,7 +82,7 @@ export const Login = () => {
               name="email"
               type="email"
               value={formData.email}
-              placeholder="naanga4peru@gmail.com"
+              placeholder="abc@gmail.com"
               onChange={handleChange}
             />
 
